@@ -1,0 +1,50 @@
+﻿@page "/fetchdata"
+
+<PageTitle>Weather forecast</PageTitle>
+
+@using BlazorAppStudent.Data
+@inject WeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Surname </th>
+                <th>Name </th>
+                <th>Patronymic </th>
+                <th>Date of Birth </th>
+                <th>Groupp </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Surname</td>
+                    <td>@forecast.Name</td>
+                    <td>@forecast.Patronymic</td>
+                    <td>@forecast.DateOfBirth.ToShortDateString()</td>
+                    <td>@forecast.Groupp </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
+}
